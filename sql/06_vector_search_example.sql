@@ -5,6 +5,7 @@
 DECLARE top_k INT64 DEFAULT 5;
 
 -- Paste the 384 comma-separated floats from the notebook where indicated
+--  paste the entire single line from assets/sample_query_embedding_minilm.txt here 
 WITH q AS (
   SELECT ARRAY<FLOAT64>[
     /* <PASTE_384_FLOATS_HERE> */
