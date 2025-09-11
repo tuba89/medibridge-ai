@@ -8,7 +8,8 @@ Semantic search over TCGA clinical notes, AI-generated Care Cards, and incidence
 
 ## 🔗 Quick Links
 
-- **Kaggle Notebook (demo pipeline):** [ADD_YOUR_KAGGLE_LINK_HERE]
+- **Kaggle Notebook (demo pipeline):** [▶️ Open the Kaggle notebook](https://www.kaggle.com/code/assiaben/medibridge-ai-clinical-decision-support)
+
 - **Public BigQuery table (processed clinical cases):**  
   ```
   medi-bridge-2025.kaggle_share.tcga_clinical_processed
@@ -17,17 +18,22 @@ Semantic search over TCGA clinical notes, AI-generated Care Cards, and incidence
 
 ---
 
+
 ## ⚡ Quickstart (2 min)
 1) BigQuery → run `sql/01_copy_processed_to_your_project.sql` (replace `YOUR_PROJECT`).
 2) Run `sql/02_create_embeddings_table.sql` (schema stub). Populate embeddings via the Kaggle notebook.
 3) Run `sql/03_create_vector_index.sql`.
-4) Try: [Semantic search](#-run-a-semantic-search-in-bigquery) or [Forecast](#-forecast-daily-incidence).
+4) Try `sql/06_vector_search_example.sql` (paste 384-D demo embedding from `assets/sample_query_embedding_minilm.txt`).
+5) Forecast with `sql/04_build_case_daily.sql` then `sql/05_forecast_daily.sql`.
+6) Generate a Care Card with `sql/07_ai_generate_care_card.sql` (needs `us.llm_connection` + Vertex AI permission).
+
 
 
 ## 🚀 What this repo contains
 
 - **`docs/DATA_APPENDIX.md`** — Full dataset details, schema, lineage, and example queries  
 - **`docs/REPRODUCIBILITY.md`** — End-to-end steps to run the pipeline in your own GCP project  
+- **`sql/`** — Paste-and-run BigQuery SQL (copy processed table, create embeddings/index, vector search, forecasts, care card)
 - **`assets/`** — Figures for the writeup (semantic results, care card, forecasts, architecture)
 
 ---
@@ -35,24 +41,25 @@ Semantic search over TCGA clinical notes, AI-generated Care Cards, and incidence
 ## 🏗️ Pipeline (BigQuery-native)
 
 ```mermaid
-graph TD
-  A[TCGA Clinical ISB-CGC] --> C[Processed Case Table<br/>tcga_clinical_processed]
-  C --> E[Embeddings Table<br/>clinical_case_embeddings]
-  E --> I[Vector Index IVF<br/>case_vi]
-  Q[Clinician Query] --> QE[Embed Query Locally]
-  QE --> I
-  I --> K[Top-k Similar Cases]
-  K --> G[AI.GENERATE → Care Card]
-  C --> S[Build Daily/Monthly Series]
-  S --> F[AI.FORECAST → Incidence]
-  G --> D[Doctor UI / Notebook Demo]
-  F --> D
-  K --> D
+graph LR
+  A[TCGA Data] --> B[Processed Cases]
+  B --> C[Embeddings]
+  C --> D[Vector Index]
+  Q[Query] --> D
+  D --> E[Similar Cases]
+  E --> F[Care Card]
+  B --> G[Time Series]
+  G --> H[Forecast]
+  E --> I[Demo UI]
+  F --> I
+  H --> I
 ```
 
 ---
 ## 🔎 Run a semantic search in BigQuery
 Use our ready script to find **top-k similar cases** with the vector index.
+
+> **Note:** The embedding must be **384-dimensional** (MiniLM-L6-v2) to match the table vectors.
 
 **Files**
 - `sql/06_vector_search_example.sql` — paste-and-run query  
@@ -171,6 +178,11 @@ See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for exact steps and CLI
 **License:** MIT (see [LICENSE](LICENSE))
 
 **Cite:** The Cancer Genome Atlas (TCGA) program; ISB-CGC public BigQuery datasets.
+
+---
+
+## 💬 Support
+Questions or pilot interest? Open an issue or email **team@medibridge.ai**.
 
 ---
 
