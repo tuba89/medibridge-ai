@@ -1,4 +1,4 @@
-# 📊 Data Appendix — TCGA Clinical (Processed & Analysis-Ready)
+# 📊 Data Appendix - TCGA Clinical (Processed & Analysis-Ready)
 
 ## Overview
 
