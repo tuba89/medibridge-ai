@@ -17,6 +17,13 @@ Semantic search over TCGA clinical notes, AI-generated Care Cards, and incidence
 
 ---
 
+## ⚡ Quickstart (2 min)
+1) BigQuery → run `sql/01_copy_processed_to_your_project.sql` (replace `YOUR_PROJECT`).
+2) Run `sql/02_create_embeddings_table.sql` (schema stub). Populate embeddings via the Kaggle notebook.
+3) Run `sql/03_create_vector_index.sql`.
+4) Try: [Semantic search](#-run-a-semantic-search-in-bigquery) or [Forecast](#-forecast-daily-incidence).
+
+
 ## 🚀 What this repo contains
 
 - **`docs/DATA_APPENDIX.md`** — Full dataset details, schema, lineage, and example queries  
@@ -42,6 +49,26 @@ graph TD
   F --> D
   K --> D
 ```
+
+---
+## 🔎 Run a semantic search in BigQuery
+Use our ready script to find **top-k similar cases** with the vector index.
+
+**Files**
+- `sql/06_vector_search_example.sql` — paste-and-run query  
+- `assets/sample_query_embedding_minilm.txt` — 384-D embedding for the demo (MiniLM-L6-v2)
+
+**Steps**
+1. BigQuery Console → **Compose new query**.
+2. Paste `sql/06_vector_search_example.sql`.
+3. Replace `YOUR_PROJECT` with your project id.
+4. At `/* <PASTE_384_FLOATS_HERE> */` paste the single line from `assets/sample_query_embedding_minilm.txt`.
+5. **Run** → returns top-k similar cases (COSINE).
+
+
+## 📈 Forecast daily incidence
+- Build daily series: run `sql/04_build_case_daily.sql`
+- Forecast 14 days: run `sql/05_forecast_daily.sql`
 
 ---
 
@@ -128,7 +155,7 @@ See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for exact steps and CLI
 <img src="assets/forecast_visualization.png" width="640" alt="Forecast Visualization">
 
 ### Processing Time Distribution
-<img src="assets/Processing Time Distribution.png" width="640" height="400" alt="Processing Time Distribution">
+<img src="assets/processing_time_distribution.png" width="640" height="400" alt="Processing Time Distribution">
 
 ---
 
@@ -141,7 +168,7 @@ See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for exact steps and CLI
 
 ## 📜 License / Citation
 
-**License:** Apache-2.0
+**License:** MIT (see [LICENSE](LICENSE))
 
 **Cite:** The Cancer Genome Atlas (TCGA) program; ISB-CGC public BigQuery datasets.
 
