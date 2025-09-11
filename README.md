@@ -119,13 +119,16 @@ See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for exact steps and CLI
 ## 🖼️ Sample Results
 
 ### Semantic Search
-![Semantic Search Results](assets/semantic_search_results.png)
+<img src="assets/semantic_search_results.png" width="640" alt="Semantic Search Results">
 
-### AI-Generated Care Card
-![Care Card Example](assets/care_card_example.png)
+### AI-Generated Care Card  
+<img src="assets/care_card_example.png" width="640" alt="Care Card Example">
 
 ### Incidence Forecasting
-![Forecast Visualization](assets/forecast_visualization.png)
+<img src="assets/forecast_visualization.png" width="640" alt="Forecast Visualization">
+
+### Processing Time Distribution
+<img src="assets/Processing Time Distribution.png" width="640" height="400" alt="Processing Time Distribution">
 
 ---
 
