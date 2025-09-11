@@ -18,30 +18,30 @@
 - **`submitter_id`** (STRING) — TCGA submitter case ID  
 
 ### Demographics & Clinical Context
-- **`disease_category`** (STRING) — Canonical cancer group (e.g., Breast, Lung, Colorectal)
-- **`primary_site`** (STRING) — Primary tumor anatomical site
-- **`age_group`** (STRING) — Derived age bucket (e.g., "50-59", "60-69")
-- **`gender`** (STRING) — Reported gender
-- **`race`** (STRING) — Reported race/ethnicity
-- **`vital_status`** (STRING) — Vital status at last follow-up (Alive/Dead)
+- **`disease_category`** (STRING) : Canonical cancer group (e.g., Breast, Lung, Colorectal)
+- **`primary_site`** (STRING) : Primary tumor anatomical site
+- **`age_group`** (STRING):— Derived age bucket (e.g., "50-59", "60-69")
+- **`gender`** (STRING) : Reported gender
+- **`race`** (STRING) : Reported race/ethnicity
+- **`vital_status`** (STRING) : Vital status at last follow-up (Alive/Dead)
 
 ### Diagnosis Information
-- **`diag__primary_diagnosis`** (STRING) — Primary diagnosis text
-- **`diag__ajcc_pathologic_stage`** (STRING) — AJCC pathologic stage (if available)
-- **`diag__tumor_grade`** (STRING) — Tumor grade classification
-- **`diag__morphology`** (STRING) — Histological morphology code
+- **`diag__primary_diagnosis`** (STRING) : Primary diagnosis text
+- **`diag__ajcc_pathologic_stage`** (STRING) : AJCC pathologic stage (if available)
+- **`diag__tumor_grade`** (STRING) : Tumor grade classification
+- **`diag__morphology`** (STRING) : Histological morphology code
 
 ### Treatment Data
-- **`treatment_types`** (STRING) — Aggregated treatment modalities received
-- **`treatment_outcomes`** (STRING) — Aggregated treatment outcomes/responses
-- **`treatment_count`** (INTEGER) — Number of distinct treatments
-- **`followup_count`** (INTEGER) — Number of follow-up records
+- **`treatment_types`** (STRING) : Aggregated treatment modalities received
+- **`treatment_outcomes`** (STRING) : Aggregated treatment outcomes/responses
+- **`treatment_count`** (INTEGER) : Number of distinct treatments
+- **`followup_count`** (INTEGER) : Number of follow-up records
 
 ### Analysis-Ready Features
-- **`clinical_note`** (STRING) — **Key field** - Cleaned clinical summary text suitable for embeddings/LLMs
-- **`has_stage_info`** (BOOLEAN) — Whether staging information is available
-- **`has_treatment_outcome`** (BOOLEAN) — Whether treatment outcome data exists
-- **`years_since_diagnosis`** (FLOAT64) — Time elapsed since initial diagnosis
+- **`clinical_note`** (STRING) : **Key field** - Cleaned clinical summary text suitable for embeddings/LLMs
+- **`has_stage_info`** (BOOLEAN) : Whether staging information is available
+- **`has_treatment_outcome`** (BOOLEAN) : Whether treatment outcome data exists
+- **`years_since_diagnosis`** (FLOAT64) : Time elapsed since initial diagnosis
 
 ---
 
@@ -160,13 +160,13 @@ LEFT JOIN treatment_agg ON case_base.case_gdc_id = treatment_agg.case_gdc_id
 
 ## Usage Guidelines
 
-### ✅ Appropriate Uses
+### ✔️ Appropriate Uses
 - Academic research on cancer epidemiology
 - Machine learning model development (non-clinical)
 - Educational demonstrations of healthcare analytics
 - Semantic search and NLP technique validation
 
-### ❌ Inappropriate Uses  
+### 🚩 Inappropriate Uses  
 - Clinical decision making for actual patients
 - Diagnostic or treatment recommendations
 - Commercial medical products without proper validation
