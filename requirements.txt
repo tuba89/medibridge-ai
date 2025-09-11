@@ -1,0 +1,8 @@
+google-cloud-bigquery>=3.25.0
+pandas-gbq>=0.24.0
+pandas>=2.2
+numpy>=1.26
+tqdm>=4.66
+sentence-transformers>=3.0
+ipywidgets>=8.1
+matplotlib>=3.8
