@@ -108,7 +108,7 @@ FROM VECTOR_SEARCH(
 * 🔵 Vector search \~55% of runtime
 * 🟠 AI generation \~43% of runtime
 
-![Processing Time Distribution](assets/processing_time_distribution.png)
+![Processing Time Distribution](assets/processing_time_dist.png)
 
 ---
 
@@ -116,15 +116,15 @@ FROM VECTOR_SEARCH(
 
 ### Filter Strictness Results
 
-![Semantic Search](assets/semantic_search_results.png)
+![Semantic Search](assets/filter_strictness_results.png)
 
 ### Precision Ranking of Top Matches
 
-![Top Matches](assets/precision_ranking.png)
+![Top Matches](assets/top_matches_7.png)
 
 ### AI-Generated Care Card
 
-![Care Card Example](assets/care_card_example.png)
+![Care Card Example](assets/Care_Card_high.png)
 
 ---
 
