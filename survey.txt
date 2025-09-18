@@ -1,0 +1,35 @@
+**Team Survey: BigQuery AI - Building the Future of Data**
+
+**Instructions:**
+
+*   This survey is for bonus points.
+*   Points are awarded for completeness, not for the content of your answers.
+*   We highly encourage everyone to submit one.
+*   There are 3 questions in total - please answer all 3.
+---
+
+**Team Member Experience:**
+
+1)  **BigQuery AI:** 
+    *   Assia Ben: About 2 months (learned and implemented VECTOR_SEARCH & ML.GENERATE_TEXT during this hackathon).
+   
+
+2)  **Google Cloud:** 
+    *   About 3 months (prior basic use of BigQuery; deep, hands-on exploration during the hackathon).
+    
+
+---
+
+3)  **Feedback:**
+
+We’d love to hear from you and your experience in working with the technology during this hackathon, positive or negative. Please provide any feedback on your experience with BigQuery AI.
+
+Participating in this hackathon was a valuable opportunity to explore BigQuery AI in depth. What stood out most was how seamlessly advanced AI capabilities like semantic search and generative modeling could be embedded directly into SQL workflows. It allowed me to build a production-style pipeline entirely within BigQuery, without external APIs or complex infrastructure.
+
+The performance was impressive, running semantic similarity searches across more than 11,000 clinical cases in seconds — and it highlighted the scalability of BigQuery for data-heavy domains like healthcare.
+
+That said, there were challenges: error messages for AI functions were sometimes cryptic, and setting up embeddings or ensuring correct JSON schema outputs required trial and error. Better debugging tools or more detailed examples would make the developer experience smoother.
+
+On a personal level, my goal has always been to make technology easier and more helpful for people who are ill, whether by supporting doctors, clinicians, or hospitals, because saving time in healthcare can mean saving lives. Having experienced the importance of this firsthand, I found this project especially meaningful. It reinforced my belief that tools like BigQuery AI can truly empower clinicians and help reduce their burden so they can focus more on patients.
+
+Thus, I found BigQuery AI both powerful and practical. This hackathon gave me the confidence to see it not only as a research tool but also as a foundation for real-world applications in oncology and beyond
