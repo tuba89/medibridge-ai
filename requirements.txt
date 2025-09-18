@@ -1,8 +1,28 @@
-google-cloud-bigquery>=3.25.0
-pandas-gbq>=0.24.0
-pandas>=2.2
+# Core
 numpy>=1.26
+pandas>=2.2
 tqdm>=4.66
-sentence-transformers>=3.0
-ipywidgets>=8.1
+more-itertools>=10.0
+
+# Visualization
 matplotlib>=3.8
+seaborn>=0.13
+
+# Google Cloud
+google-cloud-bigquery>=3.25.0
+google-auth>=2.23
+pandas-gbq>=0.24.0
+pyarrow>=15.0
+
+# Kaggle
+kaggle>=1.6
+kaggle_secrets  # comes preinstalled on Kaggle, but safe to include
+
+# ML / Embeddings
+torch>=2.0
+sentence-transformers>=3.0
+scikit-learn>=1.4  # implicit dep for sentence-transformers
+
+# Jupyter / Display
+ipython>=8.20
+ipywidgets>=8.1
