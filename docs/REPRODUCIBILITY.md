@@ -1,4 +1,4 @@
-# 🔄 Reproducibility Guide — MediBridge AI Pipeline
+# 🔄 Reproducibility Guide: MediBridge AI Pipeline
 
 This guide provides step-by-step instructions to reproduce the **MediBridge AI pipeline** in your own Google Cloud Platform (GCP) project.
 
