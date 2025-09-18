@@ -1,4 +1,4 @@
-# 📊 Data Appendix – TCGA Clinical (Processed & Analysis-Ready)
+# 📊 Data Appendix: TCGA Clinical (Processed & Analysis-Ready)
 
 ## Overview
 
@@ -15,37 +15,37 @@
 
 ### Core Identifiers
 
-* **`case_id`** (STRING) — Unique case identifier, primary key
-* **`submitter_id`** (STRING) — TCGA submitter case ID
+* **`case_id`** (STRING) : Unique case identifier, primary key
+* **`submitter_id`** (STRING) : TCGA submitter case ID
 
 ### Demographics & Clinical Context
 
-* **`disease_category`** (STRING) — Canonical cancer group (e.g., Breast, Lung, Colorectal)
-* **`primary_site`** (STRING) — Primary tumor anatomical site
-* **`age_group`** (STRING) — Derived age bucket (e.g., "50-59", "60-69")
-* **`gender`** (STRING) — Reported gender
-* **`race`** (STRING) — Reported race/ethnicity
-* **`vital_status`** (STRING) — Vital status at last follow-up (Alive/Dead)
+* **`disease_category`** (STRING) : Canonical cancer group (e.g., Breast, Lung, Colorectal)
+* **`primary_site`** (STRING) : Primary tumor anatomical site
+* **`age_group`** (STRING) : Derived age bucket (e.g., "50-59", "60-69")
+* **`gender`** (STRING) : Reported gender
+* **`race`** (STRING) : Reported race/ethnicity
+* **`vital_status`** (STRING) : Vital status at last follow-up (Alive/Dead)
 
 ### Diagnosis Information
 
-* **`diag__primary_diagnosis`** (STRING) — Primary diagnosis text
-* **`diag__ajcc_pathologic_stage`** (STRING) — AJCC pathologic stage (if available)
-* **`diag__tumor_grade`** (STRING) — Tumor grade classification
-* **`diag__morphology`** (STRING) — Histological morphology code
+* **`diag__primary_diagnosis`** (STRING) : Primary diagnosis text
+* **`diag__ajcc_pathologic_stage`** (STRING) : AJCC pathologic stage (if available)
+* **`diag__tumor_grade`** (STRING) : Tumor grade classification
+* **`diag__morphology`** (STRING) : Histological morphology code
 
 ### Treatment Data
 
-* **`treatment_types`** (STRING) — Aggregated treatment modalities received
-* **`treatment_outcomes`** (STRING) — Aggregated treatment outcomes/responses
-* **`treatment_count`** (INTEGER) — Number of distinct treatments
-* **`followup_count`** (INTEGER) — Number of follow-up records
+* **`treatment_types`** (STRING) : Aggregated treatment modalities received
+* **`treatment_outcomes`** (STRING) : Aggregated treatment outcomes/responses
+* **`treatment_count`** (INTEGER) : Number of distinct treatments
+* **`followup_count`** (INTEGER) : Number of follow-up records
 
 ### Analysis-Ready Features
 
-* **`clinical_note`** (STRING) — Cleaned clinical summary text used for embeddings/LLMs
-* **`has_stage_info`** (BOOLEAN) — Whether staging information is available
-* **`has_treatment_outcome`** (BOOLEAN) — Whether treatment outcome data exists
+* **`clinical_note`** (STRING) : Cleaned clinical summary text used for embeddings/LLMs
+* **`has_stage_info`** (BOOLEAN) : Whether staging information is available
+* **`has_treatment_outcome`** (BOOLEAN) : Whether treatment outcome data exists
 
 ---
 
@@ -149,9 +149,9 @@ ORDER BY total_cases DESC;
 
 ## Related Tables (Pipeline Outputs)
 
-* **`clinical_case_embeddings`** — vector embeddings of notes
-* **`case_vi`** — vector index for similarity search
-* **`clinical_ai_guidance`** — AI-generated Care Cards
+* **`clinical_case_embeddings`** : vector embeddings of notes
+* **`case_vi`** : vector index for similarity search
+* **`clinical_ai_guidance`** : AI-generated Care Cards
 
 ---
 
