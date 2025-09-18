@@ -10,7 +10,7 @@
 
 ## 🔗 Quick Links
 
-* **Kaggle Notebook (end-to-end demo):** [▶️ Run the project on Kaggle](https://www.kaggle.com/code/assiaben/medibridge-ai-clinical-decision-support)
+* **Kaggle Notebook (end-to-end demo):** [▶️ Run the project on Kaggle](https://www.kaggle.com/code/assiaben/medibridge-ai-real-time-oncology-decision-support)
 * **Public BigQuery Table (processed clinical cases):**
 
   ```
@@ -155,7 +155,7 @@ If you use this work, please cite TCGA and ISB-CGC datasets.
 
 ---
 
-✨ Built for the **BigQuery AI Hackathon 2025** by Assia Ben
+✨ Built for the **BigQuery AI Hackathon 2025** by Assia Benkedia.
 
 
 
