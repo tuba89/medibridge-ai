@@ -1,10 +1,10 @@
-# 📊 Data Appendix - TCGA Clinical (Processed & Analysis-Ready)
+# 📊 Data Appendix – TCGA Clinical (Processed & Analysis-Ready)
 
 ## Overview
 
-**Table:** `medi-bridge-2025.kaggle_share.tcga_clinical_processed`  
-**Access:** Public, read-only BigQuery table  
-**Rows:** ~11,428 consolidated clinical cases (one row per case_id)  
+**Table:** `medi-bridge-2025.kaggle_share.tcga_clinical_processed`
+**Access:** Public, read-only BigQuery table
+**Rows:** \~11,428 consolidated clinical cases (one row per case\_id)
 **Source:** TCGA clinical data from ISB-CGC public BigQuery datasets
 
 [**Open in BigQuery Console**](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1smedi-bridge-2025!2skaggle_share!3stcga_clinical_processed)
@@ -14,42 +14,46 @@
 ## Table Schema
 
 ### Core Identifiers
-- **`case_id`** (STRING) — Unique case identifier, primary key
-- **`submitter_id`** (STRING) — TCGA submitter case ID  
+
+* **`case_id`** (STRING) — Unique case identifier, primary key
+* **`submitter_id`** (STRING) — TCGA submitter case ID
 
 ### Demographics & Clinical Context
-- **`disease_category`** (STRING) : Canonical cancer group (e.g., Breast, Lung, Colorectal)
-- **`primary_site`** (STRING) : Primary tumor anatomical site
-- **`age_group`** (STRING):— Derived age bucket (e.g., "50-59", "60-69")
-- **`gender`** (STRING) : Reported gender
-- **`race`** (STRING) : Reported race/ethnicity
-- **`vital_status`** (STRING) : Vital status at last follow-up (Alive/Dead)
+
+* **`disease_category`** (STRING) — Canonical cancer group (e.g., Breast, Lung, Colorectal)
+* **`primary_site`** (STRING) — Primary tumor anatomical site
+* **`age_group`** (STRING) — Derived age bucket (e.g., "50-59", "60-69")
+* **`gender`** (STRING) — Reported gender
+* **`race`** (STRING) — Reported race/ethnicity
+* **`vital_status`** (STRING) — Vital status at last follow-up (Alive/Dead)
 
 ### Diagnosis Information
-- **`diag__primary_diagnosis`** (STRING) : Primary diagnosis text
-- **`diag__ajcc_pathologic_stage`** (STRING) : AJCC pathologic stage (if available)
-- **`diag__tumor_grade`** (STRING) : Tumor grade classification
-- **`diag__morphology`** (STRING) : Histological morphology code
+
+* **`diag__primary_diagnosis`** (STRING) — Primary diagnosis text
+* **`diag__ajcc_pathologic_stage`** (STRING) — AJCC pathologic stage (if available)
+* **`diag__tumor_grade`** (STRING) — Tumor grade classification
+* **`diag__morphology`** (STRING) — Histological morphology code
 
 ### Treatment Data
-- **`treatment_types`** (STRING) : Aggregated treatment modalities received
-- **`treatment_outcomes`** (STRING) : Aggregated treatment outcomes/responses
-- **`treatment_count`** (INTEGER) : Number of distinct treatments
-- **`followup_count`** (INTEGER) : Number of follow-up records
+
+* **`treatment_types`** (STRING) — Aggregated treatment modalities received
+* **`treatment_outcomes`** (STRING) — Aggregated treatment outcomes/responses
+* **`treatment_count`** (INTEGER) — Number of distinct treatments
+* **`followup_count`** (INTEGER) — Number of follow-up records
 
 ### Analysis-Ready Features
-- **`clinical_note`** (STRING) : **Key field** - Cleaned clinical summary text suitable for embeddings/LLMs
-- **`has_stage_info`** (BOOLEAN) : Whether staging information is available
-- **`has_treatment_outcome`** (BOOLEAN) : Whether treatment outcome data exists
-- **`years_since_diagnosis`** (FLOAT64) : Time elapsed since initial diagnosis
+
+* **`clinical_note`** (STRING) — Cleaned clinical summary text used for embeddings/LLMs
+* **`has_stage_info`** (BOOLEAN) — Whether staging information is available
+* **`has_treatment_outcome`** (BOOLEAN) — Whether treatment outcome data exists
 
 ---
 
 ## Sample Queries
 
-### Basic Exploration
+**Row count & basic stats**
+
 ```sql
--- Row count and basic stats
 SELECT 
   COUNT(*) AS total_cases,
   COUNT(DISTINCT disease_category) AS disease_types,
@@ -57,9 +61,9 @@ SELECT
 FROM `medi-bridge-2025.kaggle_share.tcga_clinical_processed`;
 ```
 
-### Disease Distribution
+**Top cancer types**
+
 ```sql
--- Top cancer types by case count
 SELECT 
   disease_category, 
   COUNT(*) AS case_count,
@@ -69,9 +73,9 @@ GROUP BY disease_category
 ORDER BY case_count DESC;
 ```
 
-### Clinical Notes Sample
+**Clinical note snippets**
+
 ```sql
--- Peek at clinical notes for different cancer types
 SELECT 
   case_id,
   disease_category,
@@ -80,13 +84,12 @@ SELECT
   SUBSTR(clinical_note, 1, 200) AS note_snippet
 FROM `medi-bridge-2025.kaggle_share.tcga_clinical_processed`
 WHERE clinical_note IS NOT NULL
-ORDER BY disease_category, case_id
 LIMIT 10;
 ```
 
-### Treatment Analysis
+**Treatment outcomes**
+
 ```sql
--- Cases with complete treatment outcome data
 SELECT 
   disease_category,
   COUNT(*) AS total_cases,
@@ -101,118 +104,65 @@ ORDER BY total_cases DESC;
 
 ## Data Lineage & ETL Process
 
-### 1. Source Data (ISB-CGC TCGA)
-- **`isb-cgc-bq.TCGA_hg38_data_v0.clinical_diagnoses`**
-- **`isb-cgc-bq.TCGA_hg38_data_v0.clinical_treatments`**  
-- **`isb-cgc-bq.TCGA_hg38_data_v0.clinical_follow_up`**
-- **`isb-cgc-bq.TCGA_hg38_data_v0.clinical_cases`**
-
-### 2. Consolidation Process
-```sql
--- Pseudo-code for case-level consolidation
-WITH case_base AS (
-  SELECT case_gdc_id, submitter_id, disease_type, primary_site
-  FROM clinical_cases
-),
-diagnosis_ranked AS (
-  SELECT *, ROW_NUMBER() OVER (PARTITION BY case_gdc_id ORDER BY diagnosis_date DESC) as rn
-  FROM clinical_diagnoses  
-),
-treatment_agg AS (
-  SELECT 
-    case_gdc_id,
-    STRING_AGG(DISTINCT treatment_type) AS treatment_types,
-    STRING_AGG(DISTINCT treatment_outcome) AS treatment_outcomes,
-    COUNT(*) AS treatment_count
-  FROM clinical_treatments
-  GROUP BY case_gdc_id
-)
-SELECT 
-  case_base.*,
-  diagnosis_ranked.primary_diagnosis,
-  diagnosis_ranked.ajcc_pathologic_stage,
-  treatment_agg.treatment_types,
-  -- ... additional fields
-  CONCAT(
-    'Patient: ', age_at_diagnosis, ' year old ', gender, ' ',
-    'Diagnosis: ', primary_diagnosis, ' ',
-    'Stage: ', COALESCE(ajcc_pathologic_stage, 'Unknown'), ' ',
-    'Treatments: ', COALESCE(treatment_types, 'None documented')
-  ) AS clinical_note
-FROM case_base
-LEFT JOIN diagnosis_ranked ON case_base.case_gdc_id = diagnosis_ranked.case_gdc_id AND diagnosis_ranked.rn = 1
-LEFT JOIN treatment_agg ON case_base.case_gdc_id = treatment_agg.case_gdc_id
-```
-
-### 3. Data Quality & Normalization
-- **Diagnosis ranking:** Most recent primary diagnosis per case
-- **Stage standardization:** AJCC stages normalized to consistent format
-- **Treatment aggregation:** Multiple treatments rolled up into summary strings
-- **Clinical note generation:** Structured narrative suitable for LLM processing
-- **Derived features:** Age groups, disease categories, boolean flags
-
-### 4. Export & Sharing
-- **Extraction date:** June 2025
-- **Export format:** BigQuery table optimized for analytics workloads
-- **Access:** Public read-only for research/educational use
+1. **Source Data**: ISB-CGC TCGA clinical tables (`diagnoses`, `treatments`, `follow_up`, `cases`)
+2. **Consolidation**: One row per case, with most recent diagnosis + rolled-up treatments
+3. **Enrichment**: Derived fields (`age_group`, `has_stage_info`, `has_treatment_outcome`) + generated `clinical_note`
+4. **Export**: Optimized BigQuery table for embeddings, semantic search, and AI generation
 
 ---
 
 ## Usage Guidelines
 
-### ✔️ Appropriate Uses
-- Academic research on cancer epidemiology
-- Machine learning model development (non-clinical)
-- Educational demonstrations of healthcare analytics
-- Semantic search and NLP technique validation
+✔️ **Appropriate Uses**
 
-### 🚩 Inappropriate Uses  
-- Clinical decision making for actual patients
-- Diagnostic or treatment recommendations
-- Commercial medical products without proper validation
-- Any use that could impact patient care
+* Academic cancer research
+* ML/NLP demonstrations
+* Educational purposes
 
-### 🔒 Privacy & Ethics
-- **De-identification:** All data is publicly available and de-identified per TCGA guidelines
-- **No PHI/PII:** No protected health information or personally identifiable information
-- **Research purpose:** Intended for research and educational use only
-- **Attribution required:** Please cite TCGA and ISB-CGC in any publications
+🚩 **Not Allowed**
+
+* Clinical decision-making
+* Real patient diagnosis or treatment
+* Commercial medical products without validation
+
+🔒 **Privacy & Ethics**
+
+* Public, de-identified TCGA data
+* No PHI/PII
+* Cite TCGA and ISB-CGC in any publications
 
 ---
 
 ## Performance Notes
 
-### Query Optimization Tips
-- **Use `case_id` for point lookups** (indexed)
-- **Filter on `disease_category`** for disease-specific analysis (good cardinality)  
-- **`clinical_note` is TEXT** — use `SUBSTR()` for previews, full text for embeddings
-- **Avoid `SELECT *`** on large result sets (>1000 rows)
+* Use `case_id` for direct lookups
+* Filter by `disease_category` for efficient disease-specific queries
+* Use `SUBSTR()` for previewing `clinical_note` instead of selecting full text
 
-### Table Statistics
-- **Compressed size:** ~45 MB
-- **Uncompressed size:** ~180 MB  
-- **Partitioning:** None (single partition, case-level data)
-- **Clustering:** Clustered by `disease_category` for optimal filtering
+**Table Size**
+
+* Compressed: \~45 MB
+* Uncompressed: \~180 MB
+* No partitioning; clustered by `disease_category`
 
 ---
 
-## Related Tables (Created by Pipeline)
+## Related Tables (Pipeline Outputs)
 
-When you run the full MediBridge pipeline, these additional tables are created:
-
-- **`clinical_case_embeddings`** — Vector embeddings of clinical notes
-- **`case_vi`** — Vector index for similarity search (IVF, COSINE distance)
-- **`clinical_ai_guidance`** — AI-generated care cards and recommendations  
-- **`case_daily` / `case_monthly`** — Time series aggregations for forecasting
-- **`tumor_board_summaries`** — Structured summaries for clinical review
+* **`clinical_case_embeddings`** — vector embeddings of notes
+* **`case_vi`** — vector index for similarity search
+* **`clinical_ai_guidance`** — AI-generated Care Cards
 
 ---
 
 ## Support & Issues
 
-For questions about the data processing pipeline or to report data quality issues:
-1. Check the main [README](../README.md) for pipeline documentation
-2. Review the [reproducibility guide](REPRODUCIBILITY.md) for setup instructions  
-3. Open an issue in this repository for specific problems
+For help with the pipeline or to report issues:
 
-**Note:** This is a research dataset. For questions about the underlying TCGA data, refer to the official [TCGA documentation](https://docs.gdc.cancer.gov/) and [ISB-CGC resources](https://isb-cancer-genomics-cloud.readthedocs.io/).
+* Check the [README](../README.md)
+* Review the reproducibility guide
+* Open a GitHub issue
+
+**Note:** This is a research dataset. For original TCGA data, see [TCGA docs](https://docs.gdc.cancer.gov/) and [ISB-CGC resources](https://isb-cancer-genomics-cloud.readthedocs.io/).
+
+
