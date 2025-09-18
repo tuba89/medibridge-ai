@@ -1,7 +1,4 @@
-Perfect 👍 Let’s clean this up and make your GitHub README **match your Kaggle notebook + current pipeline**.
-Here’s a fresh draft you can paste into `README.md`:
 
----
 
 # 🧬 MediBridge AI: Real-Time Oncology Decision Support
 
