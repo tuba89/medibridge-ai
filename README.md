@@ -1,189 +1,164 @@
-# 🧬 MediBridge AI: Clinical Decision Support (BigQuery AI)
+Perfect 👍 Let’s clean this up and make your GitHub README **match your Kaggle notebook + current pipeline**.
+Here’s a fresh draft you can paste into `README.md`:
 
-Semantic search over TCGA clinical notes, AI-generated Care Cards, and incidence forecasting — all **inside BigQuery**.
+---
 
-> **Disclaimer:** Research demo using public TCGA data (de-identified). Not a medical device. Do **not** use for clinical decisions.
+# 🧬 MediBridge AI: Real-Time Oncology Decision Support
+
+**Semantic search + AI-generated Care Cards — fully inside BigQuery with Gemini Flash.**
+
+> ⚠️ **Disclaimer:** This is a research demo using publicly available, de-identified TCGA data. It is *not* intended for clinical use.
 
 ---
 
 ## 🔗 Quick Links
 
-- **Kaggle Notebook (demo pipeline):** [▶️ Open the Kaggle notebook](https://www.kaggle.com/code/assiaben/medibridge-ai-clinical-decision-support)
+* **Kaggle Notebook (end-to-end demo):** [▶️ Run the project on Kaggle](https://www.kaggle.com/code/assiaben/medibridge-ai-clinical-decision-support)
+* **Public BigQuery Table (processed clinical cases):**
 
-- **Public BigQuery table (processed clinical cases):**  
   ```
   medi-bridge-2025.kaggle_share.tcga_clinical_processed
   ```
-  [Open in Console](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1smedi-bridge-2025!2skaggle_share!3stcga_clinical_processed)
+
+  [Open in BigQuery Console](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1smedi-bridge-2025!2skaggle_share!3stcga_clinical_processed)
 
 ---
 
+## 🚀 What MediBridge AI Does
 
-## ⚡ Quickstart (2 min)
-1) BigQuery → run `sql/01_copy_processed_to_your_project.sql` (replace `YOUR_PROJECT`).
-2) Run `sql/02_create_embeddings_table.sql` (schema stub). Populate embeddings via the Kaggle notebook.
-3) Run `sql/03_create_vector_index.sql`.
-4) Try `sql/06_vector_search_example.sql` (paste 384-D demo embedding from `assets/sample_query_embedding_minilm.txt`).
-5) Forecast with `sql/04_build_case_daily.sql` then `sql/05_forecast_daily.sql`.
-6) Generate a Care Card with `sql/07_ai_generate_care_card.sql` (needs `us.llm_connection` + Vertex AI permission).
+Oncologists often lose precious time manually searching fragmented patient records.
+**MediBridge AI reduces case review from 20–30 minutes to under 10 seconds** by:
+
+* 🔍 **Semantic Vector Search**: Find clinically similar cases via embeddings + BigQuery `VECTOR_SEARCH()`
+* 🤖 **AI-Generated Care Cards**: Structured guidance from Gemini Flash, with staging, modalities, and follow-up
+* 📊 **Profiling & Transparency**: Runtime profiling and top semantic matches shown for full explainability
 
 
-
-## 🚀 What this repo contains
-
-- **`docs/DATA_APPENDIX.md`** — Full dataset details, schema, lineage, and example queries  
-- **`docs/REPRODUCIBILITY.md`** — End-to-end steps to run the pipeline in your own GCP project  
-- **`sql/`** — Paste-and-run BigQuery SQL (copy processed table, create embeddings/index, vector search, forecasts, care card)
-- **`assets/`** — Figures for the writeup (semantic results, care card, forecasts, architecture)
-
----
-
-## 🏗️ Pipeline (BigQuery-native)
+## 🧭 MediBridge AI - Architecture Diagram
 
 ```mermaid
-graph LR
-  A[TCGA Data] --> B[Processed Cases]
-  B --> C[Embeddings]
-  C --> D[Vector Index]
-  Q[Query] --> D
-  D --> E[Similar Cases]
-  E --> F[Care Card]
-  B --> G[Time Series]
-  G --> H[Forecast]
-  E --> I[Demo UI]
-  F --> I
-  H --> I
+graph TB
+    A[TCGA Clinical Data] 
+    --> B[Embedding Generator<br/><b>MiniLM-L6-v2</b>]
+    
+    B --> C[BigQuery Embeddings Table]
+    
+    C --> D[VECTOR INDEX Creation]
+    
+    D --> E[VECTOR_SEARCH Query]
+    
+    E --> F[Top Similar Cases]
+    
+    F --> G[Prompt Builder]
+    
+    G --> H[Gemini Flash 2.0<br/><b>ML.GENERATE_TEXT</b>]
+    
+    H --> I[Structured Care Summary]
+    
+    %% Explicit styling for dark mode compatibility
+    classDef default fill:#ffffff,stroke:#000000,color:#000000;
+    classDef process fill:#e1f5fe,stroke:#01579b,color:#000000;
+    classDef data fill:#f3e5f5,stroke:#4a148c,color:#000000;
+    classDef output fill:#e8f5e8,stroke:#1b5e20,color:#000000;
+    
+    class A,D data;
+    class B,E,G process;
+    class C,F,H,I output;
 ```
 
----
-## 🔎 Run a semantic search in BigQuery
-Use our ready script to find **top-k similar cases** with the vector index.
+## ⚙️ Technical Deep Dive
 
-> **Note:** The embedding must be **384-dimensional** (MiniLM-L6-v2) to match the table vectors.
+### 1. Semantic Search in BigQuery
 
-**Files**
-- `sql/06_vector_search_example.sql` — paste-and-run query  
-- `assets/sample_query_embedding_minilm.txt` — 384-D embedding for the demo (MiniLM-L6-v2)
+* **Embedding Model**: `all-MiniLM-L6-v2` → 384-D vectors
+* **Storage**: BigQuery arrays (`ARRAY<FLOAT64>`)
+* **Index**: IVF + cosine similarity for fast search across 11k+ cases
 
-**Steps**
-1. BigQuery Console → **Compose new query**.
-2. Paste `sql/06_vector_search_example.sql`.
-3. Replace `YOUR_PROJECT` with your project id.
-4. At `/* <PASTE_384_FLOATS_HERE> */` paste the single line from `assets/sample_query_embedding_minilm.txt`.
-5. **Run** → returns top-k similar cases (COSINE).
-
-
-## 📈 Forecast daily incidence
-- Build daily series: run `sql/04_build_case_daily.sql`
-- Forecast 14 days: run `sql/05_forecast_daily.sql`
-
----
-
-## 📦 Data Appendix (summary)
-
-**Table (public, read-only):**
-```
-medi-bridge-2025.kaggle_share.tcga_clinical_processed
-```
-
-- **Rows:** ~11,428 (one per case_id)
-- **Source:** TCGA clinical (ISB-CGC BigQuery public datasets), consolidated for ML/LLM use.
-
-### Key Columns (subset)
-
-| Field | Type | What it's for |
-|-------|------|---------------|
-| `case_id` | STRING | Row key |
-| `submitter_id` | STRING | TCGA submitter ID |
-| `disease_category` | STRING | Canonical cancer group |
-| `primary_site` | STRING | Site of origin |
-| `diag__primary_diagnosis` | STRING | Primary diagnosis text |
-| `diag__ajcc_pathologic_stage` | STRING | AJCC stage (if present) |
-| `treatment_types` | STRING | Modalities received |
-| `treatment_outcomes` | STRING | Outcome / response |
-| `age_group` | STRING | Derived bucket |
-| `gender` | STRING | Reported gender |
-| `vital_status` | STRING | Vital at last follow-up |
-| `clinical_note` | STRING | Cleaned narrative used for embeddings/LLMs |
-
-### Try it
+**SQL Example**
 
 ```sql
--- Count
-SELECT COUNT(*) AS n
-FROM `medi-bridge-2025.kaggle_share.tcga_clinical_processed`;
-
--- Peek
-SELECT case_id, disease_category, diag__primary_diagnosis,
-       diag__ajcc_pathologic_stage,
-       SUBSTR(clinical_note, 1, 180) AS note_snippet
-FROM `medi-bridge-2025.kaggle_share.tcga_clinical_processed`
-LIMIT 5;
+SELECT base.*, distance
+FROM VECTOR_SEARCH(
+  TABLE `medi-bridge-2025.clinical_analysis.clinical_case_embeddings`,
+  'note_embedding',
+  (SELECT [...384 floats...] AS query_vector),
+  top_k => 5,
+  distance_type => 'COSINE'
+)
 ```
 
-**Full schema + lineage SQL:** see [`docs/DATA_APPENDIX.md`](docs/DATA_APPENDIX.md).
+---
+
+### 2. Care Card Generation
+
+* **Model**: Gemini Flash (`ML.GENERATE_TEXT`)
+* **Output**: JSON structured into:
+
+  * 🎯 Provisional category & staging
+  * 💊 Suggested treatment modalities
+  * 📅 Follow-up plan
+  * 🚨 Escalation flag + confidence score
 
 ---
 
-## 🔒 Reproducibility (IAM & Auth)
+### 3. Performance Profiling
 
-**Service Account (runner):**
-- BigQuery Job User (project)
-- BigQuery Data Viewer (source datasets)
-- BigQuery Data Editor (target datasets)  
-- BigQuery Connection User on `us.llm_connection`
-- Grant Vertex AI User to the connection's service account
+* ⏱️ **<10 seconds** end-to-end latency
+* 🟢 Data processing negligible (<2%)
+* 🔵 Vector search \~55% of runtime
+* 🟠 AI generation \~43% of runtime
 
-**Kaggle/Colab secret:** `GCP_SECRET_KEY` (full SA JSON).
-
-See [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) for exact steps and CLI.
+![Processing Time Distribution](assets/processing_time_distribution.png)
 
 ---
 
-## 📈 Outputs (tables created by the notebook)
+## 🖼️ Sample Outputs
 
-- **`clinical_case_embeddings`** — vectors + metadata
-- **`case_vi`** — vector index (IVF, COSINE)  
-- **`clinical_ai_guidance`** — Care Card (AI.GENERATE or deterministic fallback)
-- **`case_daily`, `case_monthly`** — time series for AI.FORECAST
-- **`tumor_board_summaries`** — 5-bullet summaries
+### Filter Strictness Results
+
+![Semantic Search](assets/semantic_search_results.png)
+
+### Precision Ranking of Top Matches
+
+![Top Matches](assets/precision_ranking.png)
+
+### AI-Generated Care Card
+
+![Care Card Example](assets/care_card_example.png)
 
 ---
 
-## 🖼️ Sample Results
+## 📦 Repo Contents
 
-### Semantic Search
-<img src="assets/semantic_search_results.png" width="640" alt="Semantic Search Results">
+* **`sql/`** – ready-to-run queries:
 
-### AI-Generated Care Card  
-<img src="assets/care_card_example.png" width="640" alt="Care Card Example">
-
-### Incidence Forecasting
-<img src="assets/forecast_visualization.png" width="640" alt="Forecast Visualization">
-
-### Processing Time Distribution
-<img src="assets/processing_time_distribution.png" width="640" height="400" alt="Processing Time Distribution">
+  * `01_copy_processed_to_your_project.sql`
+  * `02_create_embeddings_table.sql`
+  * `03_create_vector_index.sql`
+  * `06_vector_search_example.sql`
+  * `07_ai_generate_care_card.sql`
+* **`assets/`** – figures for writeup and demo
+* **`docs/`** – reproducibility + dataset appendix
+* **`requirements.txt`** – dependencies
 
 ---
 
 ## ⚖️ Ethics
 
-- Public, de-identified TCGA data; no PHI/PII processed here.
-- Research demo only; not validated for clinical use.
+* Data: TCGA (public, de-identified) via ISB-CGC BigQuery
+* No PHI/PII processed
+* Research + educational use only
 
 ---
 
-## 📜 License / Citation
+## 📜 License
 
-**License:** MIT (see [LICENSE](LICENSE))
-
-**Cite:** The Cancer Genome Atlas (TCGA) program; ISB-CGC public BigQuery datasets.
-
----
-
-## 💬 Support
-Questions or pilot interest? Open an issue or email **team@medibridge.ai**.
+**MIT License** (see [LICENSE](LICENSE))
+If you use this work, please cite TCGA and ISB-CGC datasets.
 
 ---
 
-*For full details on data processing, schema, and step-by-step reproduction, see the docs folder.*
+✨ Built for the **BigQuery AI Hackathon 2025** by Assia Ben
+
+
+
