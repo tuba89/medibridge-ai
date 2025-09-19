@@ -123,7 +123,14 @@ FROM VECTOR_SEARCH(
 
 ![Care Card Example](assets/Care_Card_high.png)
 
----
+
+## 🌐 Live Demo Web App
+
+To illustrate real-world use, I deployed a **Flask web app** on Google Cloud Run.  
+It allows clinicians (or anyone) to enter a query and instantly get back a structured Care Card.  
+
+👉 [Try the Live App](https://medibridge-app-1098912241893.us-central1.run.app/)  
+
 
 ## 📦 Repo Contents
 
