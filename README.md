@@ -24,7 +24,7 @@
 ## 🚀 What MediBridge AI Does
 
 Oncologists often lose precious time manually searching fragmented patient records.
-**MediBridge AI reduces case review from 20–30 minutes to under 10 seconds** by:
+**MediBridge AI reduces case review from hours to under 10 seconds** by:
 
 * 🔍 **Semantic Vector Search**: Find clinically similar cases via embeddings + BigQuery `VECTOR_SEARCH()`
 * 🤖 **AI-Generated Care Cards**: Structured guidance from Gemini Flash, with staging, modalities, and follow-up
