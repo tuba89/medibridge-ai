@@ -131,6 +131,16 @@ It allows clinicians (or anyone) to enter a query and instantly get back a struc
 
 👉 [Try the Live App](https://medibridge-app-1098912241893.us-central1.run.app/)  
 
+### 🖼️ Demo Screenshots
+
+<p align="center">
+  <img src="images/MedibridgeAI_UI.png" alt="MediBridge AI User Interface" width="45%"/>
+  <img src="images/MedibridgeAI-Carecard-Results.png" alt="Sample Care Card Output" width="45%"/>
+</p>
+
+> **Note:** This live demo is for illustration only.  
+> The underlying model and dataset are prototypes and need further cleaning, enrichment, and validation before clinical use.
+
 
 ## 📦 Repo Contents
 
