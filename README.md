@@ -124,12 +124,24 @@ FROM VECTOR_SEARCH(
 ![Care Card Example](assets/Care_Card_high.png)
 
 
-## 🌐 Live Demo Web App
 
-To illustrate real-world use, I deployed a **Flask web app** on Google Cloud Run.  
-It allows clinicians (or anyone) to enter a query and instantly get back a structured Care Card.  
+### 🌐 MediBridge AI – Live Web App
 
-👉 [Try the Live App](https://medibridge-app-1098912241893.us-central1.run.app/)  
+A production-style **Flask + BigQuery AI** demo is available for anyone to explore:
+
+👉 **[Launch the Live App](https://medibridge-app-1098912241893.us-central1.run.app/)**
+
+This interface lets clinicians—or any user—enter a free-text clinical query and receive a structured, AI-generated **Care Card**.  
+The app combines:
+
+* **Semantic Search** (BigQuery Vector Index)  
+* **Gemini-powered Guidance** (BigQuery ML.GENERATE_TEXT)  
+* A polished **Flask front-end** served on Google Cloud Run
+
+> **Important:** This is an **MVP** for demonstration only.  
+> Accuracy depends on the limited dataset and basic preprocessing.  
+> Real-world use would require extensive data cleaning, larger training sets, and clinical validation.
+
 
 ### 🖼️ Demo Screenshots
 
@@ -137,9 +149,6 @@ It allows clinicians (or anyone) to enter a query and instantly get back a struc
   
   <img src="assets/MedibridgeAI-Carecard-Results_b.png" alt="Sample Care Card Output" width="60%"/>
 
-
-> **Note:** This live demo is for illustration only.  
-> The underlying model and dataset are prototypes and need further cleaning, enrichment, and validation before clinical use.
 
 
 ## 📦 Repo Contents
