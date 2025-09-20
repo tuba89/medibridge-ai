@@ -131,7 +131,7 @@ A production-style **Flask + BigQuery AI** demo is available for anyone to explo
 
 👉 **[Launch the Live App](https://medibridge-app-1098912241893.us-central1.run.app/)**
 
-This interface lets clinicians—or any user—enter a free-text clinical query and receive a structured, AI-generated **Care Card**.  
+This interface lets clinicians (or any user) enter a free-text clinical query and receive a structured, AI-generated **Care Card**.  
 The app combines:
 
 * **Semantic Search** (BigQuery Vector Index)  
