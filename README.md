@@ -133,10 +133,10 @@ It allows clinicians (or anyone) to enter a query and instantly get back a struc
 
 ### 🖼️ Demo Screenshots
 
-<p align="center">
-  <img src="images/MedibridgeAI_UI.png" alt="MediBridge AI User Interface" width="45%"/>
-  <img src="images/MedibridgeAI-Carecard-Results.png" alt="Sample Care Card Output" width="45%"/>
-</p>
+<img src="assets/MedibridgeAI_UI_b.png" alt="MediBridge AI User Interface" width="60%"/>
+  
+  <img src="assets/MedibridgeAI-Carecard-Results_b.png" alt="Sample Care Card Output" width="60%"/>
+
 
 > **Note:** This live demo is for illustration only.  
 > The underlying model and dataset are prototypes and need further cleaning, enrichment, and validation before clinical use.
