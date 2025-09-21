@@ -19,6 +19,14 @@
 
   [Open in BigQuery Console](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1smedi-bridge-2025!2skaggle_share!3stcga_clinical_processed)
 
+
+* The full Jupyter notebook is included in this repository:  
+`MediBridge_AI_Notebook.ipynb`  
+
+> **Note:** If the notebook doesn’t render on GitHub, open it in  [nbviewer](https://nbviewer.org/github/tuba89/medibridge-ai/blob/main/MediBridge_AI_Notebook.ipynb)
+> for the full interactive view.
+
+
 ---
 
 ## 🚀 What MediBridge AI Does
